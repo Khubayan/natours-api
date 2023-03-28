@@ -5,13 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start:dev": "nodemon server.js",
-    "start:prod": "set NODE_ENV=production && nodemon server.js"
+    "start:prod": "set NODE_ENV=production && nodemon server.js",
+    "start": "node server.js"
   },
   "author": "Khubayan",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^7.0.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
@@ -24,5 +26,13 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "prettier": "^2.8.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khubayan/natours-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Khubayan/natours-api/issues"
+  },
+  "homepage": "https://github.com/Khubayan/natours-api#readme"
 }
