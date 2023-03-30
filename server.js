@@ -36,6 +36,21 @@ const tourSchema = new mongoose.Schema({
 // MODELS
 const Tour = mongoose.model('Tour', tourSchema);
 
+const testTour = new Tour({
+  name: 'NuNu Chan',
+  // rating: 4.9,
+  price: 999,
+});
+
+testTour
+  .save()
+  .then((doc) => {
+    console.log(doc);
+  })
+  .catch((err) => {
+    console.log('ERROR: ', err);
+  });
+
 // START THE SERVER
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
