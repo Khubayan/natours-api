@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 // SCHEMAS
+// Basically, this is where we define the model or structure of data in the MongoDB database, and it's called a schema.
 const tourSchema = new mongoose.Schema({
   name: {
     type: String,

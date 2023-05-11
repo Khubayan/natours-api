@@ -11,8 +11,8 @@ const app = express();
 // MIDDLEWARES
 console.log('App running in', process.env.NODE_ENV, 'environment');
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.static(`${__dirname}/public`));
+app.use(express.json()); // This is where we define a middleware, because out of the box, Express does not include body data in the request object. Therefore, to make data available on the request, we run this middleware
+app.use(express.static(`${__dirname}/public`)); // This is used to serve static files. Use the URL 'https://domain/filename.html'. We don't need to add the 'public' directory to the URL because, by default, Express will look for files in the 'public' folder.
 
 // This middleware below will be applied to all endpoints since we haven't specified any endpoint. By the way, our routes also act as middleware, but only for certain endpoints.
 app.use((req, res, next) => {
@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-app.use('/api/v1/tours', tourRouter); // This is where we mount the route. Any request that refers to 'http://domain/api/v1/tours/' will be directed to the tourRouter. Depending on the method and request, the specific router will be called to process the request. In the route folder, you can check which HTTP methods the tourRoute supports.
+app.use('/api/v1/tours', tourRouter); // This is where we mount the specific route. Any request that refers to 'http://domain/api/v1/tours/' will be directed to the tourRouter. Depending on the method and request, the specific router will be called to process the request. In the route folder, you can check which HTTP methods the tourRoute supports.
 app.use('/api/v1/users', userRouter);
 
 module.exports = app;
