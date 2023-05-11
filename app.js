@@ -11,7 +11,7 @@ const app = express();
 // MIDDLEWARES
 console.log('App running in', process.env.NODE_ENV, 'environment');
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-app.use(express.json()); // This is where we define a middleware, because out of the box, Express does not include body data in the request object. Therefore, to make data available on the request, we run this middleware
+app.use(express.json()); // Because out of the box, Express does not include body data in the request object. Therefore, to make data available on the request, we run this middleware.
 app.use(express.static(`${__dirname}/public`)); // This is used to serve static files. Use the URL 'https://domain/filename.html'. We don't need to add the 'public' directory to the URL because, by default, Express will look for files in the 'public' folder.
 
 // This middleware below will be applied to all endpoints since we haven't specified any endpoint. By the way, our routes also act as middleware, but only for certain endpoints.
