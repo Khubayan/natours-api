@@ -5,8 +5,6 @@ const Tour = require('../../models/tourModel');
 
 dotenv.config({ path: './config.env' });
 
-// console.log(process.env.DATABASE_PASSWORD + 'SAassa');
-
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
@@ -49,6 +47,6 @@ const deleteData = async () => {
 // Checking the argument on terminal to run certain process.
 if (process.argv[2] === '--import') {
   importData();
-} else if (process.argv[2] == '--delete') {
+} else if (process.argv[2] === '--delete') {
   deleteData();
 }

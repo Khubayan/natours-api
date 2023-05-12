@@ -3,7 +3,9 @@ const Tour = require('../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    //NOTE:
+    // *>req.query* is used to get query strings from a URL. Basically, it is used to allow users to filter the incoming response from an API server using the URL.
+    const tours = await Tour.find(req.query);
 
     res.status(200).json({
       status: 'success',
