@@ -4,9 +4,22 @@ const Tour = require('../models/tourModel');
 exports.getAllTours = async (req, res) => {
   try {
     //NOTE:
-    // *>req.query* is used to get query strings from a URL. Basically, it is used to allow users to filter the incoming response from an API server using the URL.
-    const tours = await Tour.find(req.query);
+    // *req.query* is used to get query strings from a URL. Basically, it is used to allow users to filter the incoming response from an API server using the URL.
+    // The *excludedFields* array is used to avoid miscommunication when filtering data using query parameters through a URL. For example, instead of using the keyword "page" as a query parameter in the URL, it can be used in the browser for pagination.
 
+    // BUILD QUERY
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((el) => delete queryObj[el]);
+    console.log(req.query, queryObj);
+
+    const query = Tour.find(queryObj);
+
+    // EXECUTE QUERY
+    const tours = await query;
+
+    // SEND RESPONSE
     res.status(200).json({
       status: 'success',
       result: tours.length,
