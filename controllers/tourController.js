@@ -24,12 +24,24 @@ exports.getAllTours = async (req, res) => {
 
     let query = Tour.find(JSON.parse(queryStr)); // Tour.find() will return a query, allowing you to chain methods to it.
 
+    // 2 Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' '); //In the URL, we split the query parameter. For example, from "price,createdAt" into "price createdAt" so that we can use it as a sort parameter on Mongoose's methods like sort().
+      // "When *sorting*, the *'-'* sign is used for *descending* sorting.
       query = query.sort(sortBy);
       // console.log(sortBy);
     } else {
       query = query.sort('createdAt');
+    }
+
+    // 3 Fields
+    if (req.query.fields) {
+      // console.log(req.query.fields);
+      const fields = req.query.fields.split(',').join(' ');
+      // console.log(fields);
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v'); // But when using the select method, the '-' sign is used for excluding.
     }
 
     // EXECUTE QUERY
