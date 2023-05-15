@@ -8,13 +8,20 @@ exports.getAllTours = async (req, res) => {
     // The *excludedFields* array is used to avoid miscommunication when filtering data using query parameters through a URL. For example, instead of using the keyword "page" as a query parameter in the URL, it can be used in the browser for pagination.
 
     // BUILD QUERY
+    // 1) Filtering
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
     console.log(req.query, queryObj);
 
-    const query = Tour.find(queryObj);
+    // 2) Advance filtering
+    let queryStr = JSON.stringify(queryObj); // Converting the *queryObj* into a string allows us to manipulate it as a string.
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`); // Here we match the *queryStr* with the regex we have defined, using keywords in MongoDB, and return it back *with the "$" sign so MongoDB knows it is an operator used for filtering data*.
+
+    // console.log(JSON.parse(queryStr));
+
+    const query = Tour.find(JSON.parse(queryStr));
 
     // EXECUTE QUERY
     const tours = await query;
