@@ -1,0 +1,2 @@
+# natours-api
+This Git repository serves as a comprehensive record of my progress while learning the 'natours' project by Jonas on Udemy. It contains a chronological collection of commits and branches representing each milestone, lesson, and exercise completed during the course. By exploring the commit history, you can track my learning journey and review the code changes made at each step. This repository serves as a valuable resource for reference and reflection on my API development skills gained through this course.
