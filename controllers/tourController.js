@@ -8,20 +8,29 @@ exports.getAllTours = async (req, res) => {
     // The *excludedFields* array is used to avoid miscommunication when filtering data using query parameters through a URL. For example, instead of using the keyword "page" as a query parameter in the URL, it can be used in the browser for pagination.
 
     // BUILD QUERY
-    // 1) Filtering
+    // 1A) Filtering
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const queryObj = { ...req.query };
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((el) => delete queryObj[el]);
-    console.log(req.query, queryObj);
+    // console.log(req.query, queryObj);
+    // console.log(req.query);
 
-    // 2) Advance filtering
+    // 1B) Advance filtering
     let queryStr = JSON.stringify(queryObj); // Converting the *queryObj* into a string allows us to manipulate it as a string.
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`); // Here we match the *queryStr* with the regex we have defined, using keywords in MongoDB, and return it back *with the "$" sign so MongoDB knows it is an operator used for filtering data*.
 
     // console.log(JSON.parse(queryStr));
 
-    const query = Tour.find(JSON.parse(queryStr));
+    let query = Tour.find(JSON.parse(queryStr)); // Tour.find() will return a query, allowing you to chain methods to it.
+
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' '); //In the URL, we split the query parameter. For example, from "price,createdAt" into "price createdAt" so that we can use it as a sort parameter on Mongoose's methods like sort().
+      query = query.sort(sortBy);
+      // console.log(sortBy);
+    } else {
+      query = query.sort('createdAt');
+    }
 
     // EXECUTE QUERY
     const tours = await query;
