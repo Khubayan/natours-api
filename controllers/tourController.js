@@ -27,11 +27,11 @@ exports.getAllTours = async (req, res) => {
     // 2 Sorting
     if (req.query.sort) {
       const sortBy = req.query.sort.split(',').join(' '); //In the URL, we split the query parameter. For example, from "price,createdAt" into "price createdAt" so that we can use it as a sort parameter on Mongoose's methods like sort().
-      // "When *sorting*, the *'-'* sign is used for *descending* sorting.
+      // "When *sorting*, the *'-'* sign is used for *descending sorting*.
       query = query.sort(sortBy);
       // console.log(sortBy);
     } else {
-      query = query.sort('createdAt');
+      query = query.sort('price');
     }
 
     // 3 Fields
@@ -41,8 +41,19 @@ exports.getAllTours = async (req, res) => {
       // console.log(fields);
       query = query.select(fields);
     } else {
-      query = query.select('-__v'); // But when using the select method, the '-' sign is used for excluding.
+      query = query.select('-__v'); // But when using the *'select' method*, the *'-' sign is used for excluding*.
     }
+
+    // 4. Pagination
+    // skip() & limit() used methods
+    const page = req.query.page * 1 || 1;
+    // console.log(typeof page, ' = ', page);
+    const limit = req.query.limit * 1 || 100;
+    // console.log(typeof limit);
+    const skip = (page - 1) * limit;
+    // console.log(page, skip);
+
+    query = query.skip(skip).limit(limit);
 
     // EXECUTE QUERY
     const tours = await query;
