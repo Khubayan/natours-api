@@ -1,6 +1,14 @@
 // const fs = require('fs');
 const Tour = require('../models/tourModel');
 
+// Middleware for 'top-5-best-prices' to manipulate th query parameter.
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = 'ratingAverage,price';
+  req.query.fields = 'name,price,ratingAverage,summary,difficulty';
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     //NOTE:
